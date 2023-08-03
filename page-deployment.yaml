@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-page-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather-page
+  template:
+    metadata:
+      labels:
+        app: weather-page
+    spec:
+      containers:
+        - name: weather-page-container
+          imagePullPolicy: IfNotPresent
+          image: weather-page:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weather-page-service
+spec:
+  selector:
+    app: weather-page
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
